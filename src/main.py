@@ -1,12 +1,16 @@
 import sys
-from window import Window
 from PyQt5.QtWidgets import QApplication
+from mainwindow import MainWindow
+
+
+def test(test_list: []):
+    print(test_list)
 
 
 def main():
-    print('hello')
-    app = QApplication([])
-    window = Window()
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
     sys.exit(app.exec())
 
 
