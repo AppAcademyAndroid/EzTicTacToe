@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication
 from mainwindow import MainWindow
 
 
-def test(test_list: []):
+def test(test_list: list):
     print(test_list)
 
 
