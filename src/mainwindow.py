@@ -7,7 +7,7 @@ class MainWindow(QMainWindow):
     def __init__(self, on_cell_click: Callable[[int, int], any] = None, on_reset_click: Callable = None):
         super().__init__()
 
-        self.setWindowTitle('EzSudoku')
+        self.setWindowTitle('EzTicTacToe')
         self.setFixedSize(250, 250)
         self.on_cell_click = on_cell_click
         self.on_reset_click = on_reset_click
