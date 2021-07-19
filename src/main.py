@@ -15,10 +15,18 @@ def print_board(board: [[]]):
                 print(f"{board[i][j]} ", end="")
 
 
+def on_action(x: int, y: int):
+    print(f'action {x}, {y}')
+
+
+def on_reset():
+    print('reset')
+
+
 def main():
     print_board(main_board)
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(on_action, on_reset)
     window.show()
     sys.exit(app.exec())
 
