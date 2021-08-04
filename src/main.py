@@ -22,6 +22,10 @@ def game_status(board: [[]]) -> int:
             continue
         if board[0][i] == board[1][i] and board[0][i] == board[2][i]:
             return board[0][i]
+    mid = board[1][1]
+    if mid != 0 and ((mid == board[0][0] and mid == board[2][2]) or (mid == board[0][2] and mid == board[2][0])):
+        return board[1][1]
+    return 0
 
 
 def print_board(board: [[]]):
