@@ -46,11 +46,14 @@ def print_board(board: [[]]):
 
 
 def min_max(board: [[]], depth: int, is_max: bool) -> int:
-    player = 1 if is_max else 2
-    score = evaluate_board(board, player)
+    player = 2 if is_max else 1
+    score = evaluate_board(board, 2)
 
     if score != 0:
         return score
+
+    if not has_moves_left(main_board):
+        return 0
 
     best_score = -1000 if is_max else 1000
     min_max_result: int
@@ -66,16 +69,46 @@ def min_max(board: [[]], depth: int, is_max: bool) -> int:
     return best_score
 
 
+def find_best_move(board: [[]], player: int) -> ():
+    score: int
+    best_score = -1000
+    best_move: () = None
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:
+                board[i][j] = player
+                score = min_max(board, 0, player == 2)
+                board[i][j] = 0
+                if score > best_score:
+                    best_score = score
+                    best_move = (i, j)
+
+    return best_move
+
+
 def on_action(x: int, y: int):
     global main_board
 
     print(f"click on cell ({x}, {y})")
 
-    if main_board[x][y] == 0:
-        main_board[x][y] = 1
-        window.mark_cell('X', x, y)
-    else:
-        print("cell already marked")
+    main_board[0][0] = 2
+    main_board[0][1] = 1
+    main_board[2][1] = 1
+    best = find_best_move(main_board, 2)
+    print(best)
+
+    # if main_board[x][y] == 0:
+    #     main_board[x][y] = 1
+    #     window.mark_cell('X', x, y)
+    #     best_move = find_best_move(main_board, 2)
+    #     if best_move is None:
+    #         print("GAME OVER")
+    #     else:
+    #         main_board[best_move[0]][best_move[1]] = 2
+    #         window.mark_cell('O', best_move[0], best_move[1])
+    # else:
+    #     print("cell already marked")
 
 
 def on_reset():
