@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
 from mainwindow import MainWindow
 
 app: QApplication
@@ -78,7 +78,7 @@ def find_best_move(board: [[]], player: int) -> ():
         for j in range(3):
             if board[i][j] == 0:
                 board[i][j] = player
-                score = min_max(board, 0, player == 2)
+                score = min_max(board, 0, player == 1)
                 board[i][j] = 0
                 if score > best_score:
                     best_score = score
@@ -92,28 +92,53 @@ def on_action(x: int, y: int):
 
     print(f"click on cell ({x}, {y})")
 
-    main_board[0][0] = 2
-    main_board[0][1] = 1
-    main_board[2][1] = 1
-    best = find_best_move(main_board, 2)
-    print(best)
+    if main_board[x][y] != 0:
+        print("invalid cell")
+        return
 
-    # if main_board[x][y] == 0:
-    #     main_board[x][y] = 1
-    #     window.mark_cell('X', x, y)
-    #     best_move = find_best_move(main_board, 2)
-    #     if best_move is None:
-    #         print("GAME OVER")
-    #     else:
-    #         main_board[best_move[0]][best_move[1]] = 2
-    #         window.mark_cell('O', best_move[0], best_move[1])
-    # else:
-    #     print("cell already marked")
+    main_board[x][y] = 1
+    window.mark_cell('X', x, y)
+
+    my_score = evaluate_board(main_board, 1)
+    if my_score == 0:
+        best_move = find_best_move(main_board, 2)
+        if best_move is None:
+            game_over(0)
+            return
+
+        main_board[best_move[0]][best_move[1]] = 2
+        window.mark_cell('O', best_move[0], best_move[1])
+
+        my_score = evaluate_board(main_board, 1)
+        if my_score == 0 and not has_moves_left(main_board):
+            game_over(0)
+            return
+
+        if my_score > 0:
+            game_over(1)
+        elif my_score < 0:
+            game_over(2)
+
+
+def game_over(winner: int):
+    print_board(main_board)
+
+    msg_box = QMessageBox()
+    msg_box.setWindowTitle('Game Over')
+    msg_box.setStandardButtons(QMessageBox.Ok)
+
+    if winner == 1:
+        msg_box.setText("cheater")
+    elif winner == 2:
+        msg_box.setText("gg ez")
+    else:
+        msg_box.setText("tie")
+
+    msg_box.exec()
+    on_reset()
 
 
 def on_reset():
-    print_board(main_board)
-    print("reset")
     window.reset_board()
     for i in range(3):
         for j in range(3):
