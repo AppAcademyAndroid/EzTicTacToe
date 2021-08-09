@@ -16,7 +16,6 @@ def evaluate_board(board: [[]], player: int) -> int:
         if first_cell != 0 and first_cell == board[i][1] and first_cell == board[i][2]:
             return 10 if first_cell == player else -10
 
-    for i in range(3):
         first_cell = board[0][i]
         if first_cell != 0 and first_cell == board[1][i] and first_cell == board[2][i]:
             return 10 if first_cell == player else -10
